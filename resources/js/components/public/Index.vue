@@ -188,7 +188,7 @@
               :src="base_url + '/images/basic_img/MARGIN-DESIGN.png'"
               class="margin_design"
             />
-            <h4 class="section_title">What's New On Sufi</h4>
+            <h4 class="section_title">What's New On Mahadizone</h4>
           </div>
 
           <NewProductsHorizontalSlide />
@@ -205,6 +205,10 @@
       <div>
         <SessionalAndOccationalCampaign />
       </div>
+
+
+
+
       <div class="row suggetion_product_row">
         <div class="col-lg-12 col-md-12 col-xs-12 margin_container text-center">
           <img

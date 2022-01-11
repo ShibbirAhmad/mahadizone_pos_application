@@ -1,5 +1,5 @@
 <template>
-  <div class="login-box" v-if="!isLoading">
+  <div class="login-box text-center" v-if="!isLoading">
     <div class="login-logo">
       <a href="#"> <b> {{ general_setting.title }}  </b></a>
     </div>
@@ -158,8 +158,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <style >
-.none {
-  display: none !important;
+
+.login-box {
+  background: #fff;
+  width: 30%;
+  margin: 10% 30%;
+  padding: 10px;
+  box-shadow: 0 0 28px 0 rgb(90 79 79 / 54%);
+
+}
+
+input{
+  height: 44px !important;
 }
 
 .password_reset_button{

@@ -69,18 +69,18 @@
                                             <td>
                                                 <router-link
                                                     :to="{ name: 'CategoryEdit', params: { categoryId: category.id }}"
-                                                    class="btn btn-success btn-sm"><i
-                                                    class="fa fa-edit"></i></router-link>
-                                                <a class="btn btn-danger" title="un-selected"
+                                                    class="btn btn-success btn-xs"><i
+                                                    class="fa btn-xs fa-edit"></i></router-link>
+                                                <a class="btn btn-xs btn-danger" title="un-selected"
                                                    @click="unselected(category)"
                                                    v-if="category.is_selected==1"><i class="fa fa-close"></i></a>
-                                                <a class="btn btn-primary" title="selected" @click="selected(category)"
+                                                <a class="btn btn-xs btn-primary" title="selected" @click="selected(category)"
                                                    v-else><i
                                                     class="fa fa-chain"></i></a>
 
-                                                <a class="btn btn-warning" title="De-active" @click="deActive(category)"
+                                                <a class="btn btn-xs btn-warning" title="De-active" @click="deActive(category)"
                                                    v-if="category.status==1"><i class="fa fa-ban"></i></a>
-                                                <a class="btn btn-primary" title="active" @click="active(category)"
+                                                <a class="btn btn-xs btn-primary" title="active" @click="active(category)"
                                                    v-else><i
                                                     class="fa fa-check"></i></a>
 

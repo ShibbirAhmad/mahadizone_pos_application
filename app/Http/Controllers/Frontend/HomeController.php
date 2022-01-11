@@ -149,8 +149,8 @@ class HomeController extends Controller
     public function slider(){
         $slider = Slider::where('status',1)->get();
         $shop_with_categories=[];
-        $shop_with_categories['mens'] = SubCategory::where('category_id',1)->orderBy('position', 'asc')->where('show_home_page',1)->where('stock','>=',1)->where('status',1)->get();
-        $shop_with_categories['womens'] = SubCategory::where('category_id',9)->orderBy('position', 'asc')->where('show_home_page',1)->where('stock','>=',1)->where('status',1)->get();
+        $shop_with_categories['mens'] = SubCategory::where('category_id',1)->orderBy('position', 'asc')->where('show_home_page',1)->where('status',1)->get();
+        $shop_with_categories['womens'] = SubCategory::where('category_id',9)->orderBy('position', 'asc')->where('show_home_page',1)->where('status',1)->get();
         return response()->json([
             'status' => 'SUCCESS',
             'sliders' => $slider,

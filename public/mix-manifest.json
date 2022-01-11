@@ -240,6 +240,5 @@
     "/chunks/viewSale.bundle.js": "/chunks/viewSale.bundle.js",
     "/chunks/welcome.bundle.js": "/chunks/welcome.bundle.js",
     "/chunks/wholesaleOrder.bundle.js": "/chunks/wholesaleOrder.bundle.js",
-    "/chunks/wishlist.bundle.js": "/chunks/wishlist.bundle.js",
-    "/chunks/vendors~AccountReport~AddSaleExchange~DeliveredOrder~OrderProfite~ReturnOrder~SaleProfite~about_and_~4eac2d53.bundle.js": "/chunks/vendors~AccountReport~AddSaleExchange~DeliveredOrder~OrderProfite~ReturnOrder~SaleProfite~about_and_~4eac2d53.bundle.js"
+    "/chunks/wishlist.bundle.js": "/chunks/wishlist.bundle.js"
 }
