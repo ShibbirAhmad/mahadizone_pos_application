@@ -1,0 +1,17 @@
+/node_modules
+/public/storage
+/public/chunks
+/public/chunks.zip
+/public/js/app.js
+/public/index.php
+/public/.htaccess
+/storage
+/bootstrap
+/vendor
+/.env
+/.env.example
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
