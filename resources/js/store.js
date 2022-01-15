@@ -52,8 +52,8 @@ const state = {
     product_images: {},
     //for check admin page view permission
     view_permission:false,
-    image_base_link: '/../storage/',
-    thumbnail_img_base_link: '/../storage/images/product_thumbnail_img/',
+    image_base_link: '/../public/storage/',
+    thumbnail_img_base_link: '/../public/storage/images/product_thumbnail_img/',
     home_page_products: "",
     general_setting:"",
     footer_setting:"",

@@ -121,7 +121,7 @@
 
                   <div class="row">
                     <div class="col-lg-12">
-                      <table class="table table-striped table-hover table-bordered ">
+                      <table class="table table-striped table-centered table-hover table-bordered ">
                         <thead>
                           <tr>
                             <th width="3%" >#</th>
@@ -138,6 +138,7 @@
                             <td>{{ index }}</td>
                             <td>
                               {{ product.name + "-" + product.product_code }}
+                              <img :src="thumbnail_base_link+product.thumbnail_img" width="50px" height="50px">
                               <input type="hidden" :value="product.id" />
                             </td>
 
@@ -151,7 +152,7 @@
                               />
                               <span class="badge badge-danger">{{ product.stock }}</span>
                             </td>
-                            <td> <span class="badge badge-success "> &#2547; {{ product.purchase_price }}  </span> </td>
+                            <td> <span class="badge badge-success "> &#2547;{{ product.purchase_price }}  </span> </td>
                             <td>
                               <input type="number" class="form-control" style="width:80px;"
                                 v-model="form.products[index].price"
@@ -160,7 +161,7 @@
                               />
 
                             </td>
-                            <td>  &#2547; {{ form.products[index].total }}</td>
+                            <td>  &#2547;{{ form.products[index].total }}</td>
                             <td>
                               <a class="btn btn-danger btn-sm" @click="remove(index)"
                                 ><i class="fa fa-trash"></i
@@ -228,6 +229,7 @@ export default {
       manager_phone:"",
       address:"",
       item:10,
+      thumbnail_base_link:this.$store.state.thumbnail_img_base_link ,
     };
   },
 
@@ -311,7 +313,7 @@ export default {
                 total: "",
               };
               for (let i = 0; i < resp.data.product.length; i++) {
-                //check the product stcok availity
+                //check the product stovk availity
                 if (resp.data.product[i].stock <= 0) {
                   return Swal.fire({
                     type: "warning",
@@ -325,7 +327,7 @@ export default {
                 product.sale_price = resp.data.product[i].sale_price;
                 product.purchase_price = resp.data.product[i].purchase_price;
                 product.total = resp.data.product[i].sale_price;
-                console.log(this.products.push(resp.data.product[i]));
+                this.products.push(resp.data.product[i]);
               }
               this.form.products.push(product);
               this.totalCalculation();
@@ -347,7 +349,7 @@ export default {
       }
     },
 
-    //when chage qauntity
+    //when change quantity
     quantity(index) {
       if(parseInt(this.products[index].stock ) < parseInt(this.form.products[index].quantity)){
         alert(`max quantity ${this.form.products[index].stock}`)

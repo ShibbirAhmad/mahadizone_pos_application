@@ -16,6 +16,8 @@
     <meta name="description" content="e-commerce platform for mens and womens fashion">
     @include('frontend.partials.css')
 
+
+
 </head>
 
 <body>
@@ -35,5 +37,12 @@
     @endif
     {{-- token receiving at the time action of socialate login  --}}
 
+
+    <script>
+
+        $(document).on('contextmenu', 'img', function() {
+            return false;
+        });
+    </script>
 </body>
 </html>

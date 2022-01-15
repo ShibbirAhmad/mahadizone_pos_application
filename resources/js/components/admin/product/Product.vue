@@ -68,12 +68,12 @@
                         <th width="10%">name</th>
                         <th width="10%">barcode</th>
                         <th width="5%">image</th>
+                        <th width="5%">purchase price</th>
                         <th width="5%">price</th>
                         <th width="5%">discount</th>
-                        <th width="5%">Sale price</th>
+                        <th width="5%">sale price</th>
                         <th width="5%">stock</th>
                         <th width="5%">status</th>
-                        <th width="5%">wallet point</th>
                         <th width="10%">action</th>
                       </tr>
                     </thead>
@@ -101,6 +101,7 @@
                             alt="product image"
                           />
                         </td>
+                        <td>{{ purchasePrice(product.purchase_item) }}</td>
                         <td>{{ product.sale_price }}</td>
                         <td>
                           <span class="badge badge-warning">{{
@@ -136,8 +137,6 @@
                           <span style="min-width:70px;"  class="badge badge-success" v-if="product.show_home_page==1"> Publish </span>
                           <span class="badge badge-warning"  v-else> Unpublish </span>
                         </td>
-
-                           <td><span class="badge badge-info" > {{ product.wallet_point }} </span> </td>
 
                         <td>
                           <i
@@ -268,6 +267,15 @@ export default {
         });
     },
 
+    purchasePrice(items){
+
+       let total_price = 0 ;
+       items.forEach(item => {
+          total_price += item.price ;
+       });
+       let average_price = total_price / items.length ;
+       return average_price ;
+    },
 
 
     copy($product_id){

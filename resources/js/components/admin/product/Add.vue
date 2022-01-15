@@ -139,7 +139,7 @@
                       class="form-control"
                       :class="{ 'is-invalid': form.errors.has('sale_price') }"
                       autocomplete="off"
-                      placeholder="sale_price"
+                      placeholder="price"
                       @keyup="salePrice()"
                     />
                     <has-error :form="form" field="sale_price"></has-error>
@@ -238,7 +238,7 @@
                     Image Gallery
                     <small>
                       <b>
-                        <i>(Every image can not be bigger than 1200*1200 px)</i>
+                        <i>(Every image can not be bigger than 2400*2400 px)</i>
                       </b>
                     </small>
                   </h3>
@@ -529,10 +529,10 @@ export default {
         });
         return;
       }
-       if(file.size/1024 > 1024){
+       if(file.size/1024 > 5120){
         Swal.fire({
           type:'warning',
-          text:'File size can not be bigger then 1024kb.Reference file size is'+file.size/1024 +'KB',
+          text:'File size can not be bigger then 5MB.Reference file size is'+file.size/1024 +'KB',
         });
         return;
       }
@@ -543,14 +543,14 @@ export default {
         let img = new Image();
         img.onload = () => {
 
-          if (img.width <= 1200 && img.height <= 1200) {
+          if (img.width <= 2400 && img.height <= 2400) {
             this.form.image.push(file);
             this.form.files.push(evt.target.result);
             return;
           } else {
             this.disabled = true;
             alert(
-              "Image maximu size 1200*1200px.But Upload imaze size" +
+              "Image maximum size 2400*2400px.But Upload image size" +
                 img.width +
                 "*" +
                 img.height +

@@ -42,8 +42,8 @@ $color=App\Models\BackgroundAndColor::first();
     }
     .tab-content {
         display: block !important;
-
     }
+
 
     .list-group .active {
         background: var(--primary-color) !important;

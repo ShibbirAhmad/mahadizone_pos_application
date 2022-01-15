@@ -531,12 +531,12 @@ export default {
 
             }
           } else {
-            this.error = "some thing went to wrong";
+            this.error = "something  went to wrong";
           }
         })
         .catch((error) => {
           console.log(error);
-         // this.error = "some thing went to wrong";
+         // this.error = "something  went to wrong";
         });
     },
     getSaleCampaign(){
@@ -576,7 +576,7 @@ export default {
             })
             .catch((error) => {
               console.log(error);
-              this.error = "some thing went to wrong";
+              this.error = "something  went to wrong";
             });
         } else {
           this.$toasted.show("OK ! no action here", {
@@ -614,7 +614,7 @@ export default {
               duration: 4000,
             });
           } else {
-            this.error = "some thing went to wrong";
+            this.error = "something  went to wrong";
           }
         })
         .catch((error) => {
@@ -622,7 +622,7 @@ export default {
           console.log(error);
           this.$Progress.finish();
 
-          this.error = "some thing went to wrong";
+          this.error = "something  went to wrong";
         });
     },
     UpdateProductProperties() {
@@ -652,7 +652,7 @@ export default {
               duration: 4000,
             });
           } else {
-            this.error = "some thing went to wrong";
+            this.error = "something  went to wrong";
           }
         })
         .catch((error) => {
@@ -660,7 +660,7 @@ export default {
           console.log(error);
           this.$Progress.finish();
 
-          this.error = "some thing went to wrong";
+          this.error = "something  went to wrong";
         });
     },
     UpdateProductImage() {
@@ -690,13 +690,13 @@ export default {
               duration: 4000,
             });
           } else {
-            this.error = "some thing went to wrong";
+            this.error = "something  went to wrong";
           }
         })
         .catch((error) => {
           console.log(error);
           this.$Progress.finish();
-          this.error = "some thing went to wrong" ;
+          this.error = "something  went to wrong" ;
         });
     },
 
@@ -710,12 +710,12 @@ export default {
             this.merchants = resp.data.merchants;
             this.attributes = resp.data.attributes;
           } else {
-            this.error = "some thing went to wrong";
+            this.error = "something  went to wrong";
           }
         })
         .catch((error) => {
           //  console.log(error)
-          this.error = "some thing went to wrong";
+          this.error = "something  went to wrong";
         });
     },
     categoryWiseSubCategory() {
@@ -736,7 +736,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.error = "some thing went wrong";
+          this.error = "something  went wrong";
         });
     },
     subCategoryWiseSubSUbCategory() {
@@ -757,7 +757,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.error = "some thing went wrong";
+          this.error = "something  went wrong";
         });
     },
     attributeWiseVariants() {
@@ -773,7 +773,7 @@ export default {
         })
         .catch((error) => {
           console.log(error);
-          this.error = "some thing went wrong";
+          this.error = "something  went wrong";
         });
     },
     salePrice() {
@@ -819,10 +819,10 @@ export default {
         alert("this is not any kind of image");
         return;
       }
-      if(file.size/1024 > 1024){
+      if(file.size/1024 > 5120){
         Swal.fire({
           type:'warning',
-          text:'File size can not be bigger then 1024kb.Reference file size is'+file.size/1024 +'KB',
+          text:'File size can not be bigger then 5MB.Reference file size is'+file.size/1024 +'KB',
         });
         return;
       }
@@ -832,14 +832,14 @@ export default {
       reader.onload = (evt) => {
         let img = new Image();
         img.onload = () => {
-          if (img.width <= 1200 && img.height <= 1200) {
+          if (img.width <= 2400 && img.height <= 2400) {
             this.form.image.push(file);
             this.form.files.push(evt.target.result);
             return;
           } else {
             this.disabled = true;
             alert(
-              "Image maximu size 1200*1200px.But Upload imaze size" +
+              "Image maximum size 2400*2400px.But Upload image size" +
                 img.width +
                 "*" +
                 img.height +

@@ -57,12 +57,12 @@ class ProductController extends Controller{
       //  return $request->all();
         $paginate = $request->item ?? 30;
         if($request->status=="all"){
-            $products = Product::orderBy('id', 'DESC')->with(['productBarcode'])->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img','show_home_page')->paginate($paginate);
+            $products = Product::orderBy('id', 'DESC')->with(['productBarcode','purchaseItem'])->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img','show_home_page')->paginate($paginate);
         }else{
-            $products = Product::orderBy('id', 'DESC')->with(['productBarcode'])->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img','show_home_page')->where('status',$request->status)->paginate($paginate);
+            $products = Product::orderBy('id', 'DESC')->with(['productBarcode','purchaseItem'])->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img','show_home_page')->where('status',$request->status)->paginate($paginate);
         }
         return response()->json([
-            'status' => 'test',
+            'status' => 'ok',
             'products' => $products
         ]);
     }
@@ -71,7 +71,7 @@ class ProductController extends Controller{
     public function slugCreator($string, $delimiter = '-') {
         // Remove special characters
           $string = preg_replace("/[~`{}.'\"\!\@\#\$\%\^\&\*\(\)\_\=\+\/\?\>\<\,\[\]\:\;\|\\\]/", "", $string);
-        // Replace blank space with delimeter
+        // Replace blank space with delimiter
         $string = preg_replace("/[\/_|+ -]+/", $delimiter, $string);
         return $string;
     }
@@ -202,7 +202,7 @@ class ProductController extends Controller{
 
     public function search($search){
 
-        $products = Product::where('product_code',$search)->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img')->with(['productBarcode'])->paginate(110);
+        $products = Product::where('product_code',$search)->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img')->with(['productBarcode','purchaseItem'])->paginate(110);
         return response()->json([
             'status' => 'SUCCESS',
             'products' => $products
@@ -571,7 +571,7 @@ class ProductController extends Controller{
 
     $products=Product::where('product_code', 'like', '%'.$data.'%')
                         ->orWhere('name', 'like', '%'.$data.'%')
-                        ->with(['productImage','purchaseItem','productBarcode'])
+                        ->with(['productImage','purchaseItem','productBarcode','purchaseItem'])
                         ->paginate(20);
     return response()->json($products);
 }
