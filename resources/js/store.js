@@ -12,6 +12,7 @@ const state = {
 
     //initialize merchant
     merchant: {},
+    outlet: {},
 
     //store cart
     cartContent: {
@@ -52,7 +53,7 @@ const state = {
     product_images: {},
     //for check admin page view permission
     view_permission:false,
-    image_base_link: '/../public/storage/',
+    image_base_link: '/../storage/',
     thumbnail_img_base_link: '/../public/storage/images/product_thumbnail_img/',
     home_page_products: "",
     general_setting:"",
@@ -65,6 +66,9 @@ const getters = {
     },
     merchant(state) {
         return state.merchant;
+    },
+    outlet(state) {
+        return state.outlet;
     },
 
     cartContent(state) {
@@ -179,6 +183,23 @@ const actions = {
                     localStorage.removeItem('merchant_token');
                     router.push({ name: 'merchant_login' });
                 }
+            })
+    },
+
+    outlet(context) {
+        axios.get('/api/outlet/login/session/check')
+            .then(resp => {
+                //when session running
+                if (resp.data.session == "running") {
+                    context.commit('outlet', resp.data.outlet);
+                }
+
+                //when session expired
+                if (resp.data.session == 'expired') {
+                    localStorage.removeItem('outlet_token');
+                    router.push({ name: 'outlet_login' });
+                }
+
             })
     },
 
@@ -368,6 +389,9 @@ const mutations = {
 
     merchant(state, payload) {
         return state.merchant = payload;
+    },
+    outlet(state, payload) {
+        return state.outlet = payload;
     },
     wishlistContent(state, payload) {
         state.wishlistContent.content = payload.wishlist_content;

@@ -343,6 +343,285 @@ const routes = [
 
 
 
+
+    {
+        path: '/outlet/login',
+        component: () => import(/* webpackChunkName: "outlet_login" */'./components/outlet/Login.vue'),
+        name: 'outlet_login',
+        props: true,
+        meta: {
+            title: "outlet login"
+        }
+    },
+
+    {
+        path: '/outlet/password/reset',
+        component: () => import(/* webpackChunkName: "outlet_password_reset" */'./components/outlet/PasswordReset'),
+        name: 'outlet_password_reset',
+        meta: {
+            title: 'outlet Password Reset'
+        }
+    },
+    {
+        path: '/outlet/code/verify/:phone',
+        component: () => import(/* webpackChunkName: "outlet_code_verified" */'./components/outlet/CodeVerified'),
+        name: 'outlet_code_verified',
+        meta: {
+            title: 'outlet Password Reset'
+        }
+    },
+
+    {
+        path: '/outlet/reset/new/password/:phone',
+        component: () => import(/* webpackChunkName: "new_password_outlet" */'./components/outlet/NewPassword'),
+        name: 'new_password_outlet',
+        meta: {
+            title: 'Update outlet Password'
+        }
+
+    },
+
+    {
+        path: '/outlet/dashboard',
+        component: () => import(/* webpackChunkName: "outlet_dashboard" */'./components/outlet/Dashboard'),
+        name: 'outlet_dashboard',
+        meta: {
+            authOutlet:true,
+            title: 'Showroom Dashboard'
+        }
+
+    },
+
+     {
+        path: '/outlet/credit',
+        component: () => import(/* webpackChunkName: "showroom_credit" */'./components/outlet/credit/Index.vue'),
+        name: 'showroom_credit',
+        meta: {
+            authOutlet:true,
+            title: 'Credit Manage'
+        }
+    },
+     {
+        path: '/outlet/credit/add',
+        component: () => import(/* webpackChunkName: "showroom_credit_add" */'./components/outlet/credit/Add.vue'),
+        name: 'showroom_credit_add',
+        meta: {
+             authOutlet:true,
+            title: 'Credit Add'
+        }
+    },
+
+     {
+        path: '/outlet/credit/edit/:id',
+        component: () => import(/* webpackChunkName: "showroom_credit_edit" */'./components/outlet/credit/Edit.vue'),
+        name: 'showroom_credit_edit',
+        meta: {
+             authOutlet:true,
+            title: 'Credit Edit'
+        }
+    },
+    {
+        path: '/outlet/due',
+        component: () => import(/* webpackChunkName: "showroom_due" */'./components/outlet/credit/Due.vue'),
+        name: 'showroom_due',
+        meta: {
+             authOutlet:true,
+            title: 'Crdit due'
+        }
+    },
+    {
+        path: '/outlet/transfer/money',
+        component: () => import(/* webpackChunkName: "transfer_money" */'./components/outlet/credit/Transfer.vue'),
+        name: 'transfer_money',
+        meta: {
+             authOutlet:true,
+            title: 'Transfer Money'
+        }
+    },
+    {
+        path: '/outlet/transfer/money/add',
+        component: () => import(/* webpackChunkName: "transfer_money_add" */'./components/outlet/credit/Transfer_Add.vue'),
+        name: 'transfer_money_add',
+        meta: {
+             authOutlet:true,
+            title: 'Transfer Money Add'
+        }
+    },
+
+
+     {
+        path: '/outlet/debit',
+        component: () => import(/* webpackChunkName: "showroom_debit" */'./components/outlet/debit/Index.vue'),
+        name: 'showroom_debit',
+        meta: {
+             authOutlet:true,
+            title: 'debit '
+        }
+    },
+
+     {
+        path: '/outlet/debit/add',
+        component: () => import(/* webpackChunkName: "showroom_debit_add" */'./components/outlet/debit/Add.vue'),
+        name: 'showroom_debit_add',
+        meta: {
+             authOutlet:true,
+            title: 'debit Add'
+        }
+    },
+
+    {
+        path: '/outlet/debit/edit/:id',
+        component: () => import(/* webpackChunkName: "showroom_debit_edit" */'./components/outlet/debit/Edit.vue'),
+        name: 'showroom_debit_edit',
+        meta: {
+             authOutlet:true,
+            title: 'debit edit'
+        }
+    },
+
+
+
+
+    {
+        path: '/outlet/products',
+        component: () => import(/* webpackChunkName: "showroom_products" */'./components/outlet/product/Index.vue'),
+        name: 'showroom_products',
+        meta: {
+             authOutlet:true,
+            title: 'Product|Manage'
+        }
+    },
+
+    {
+        path: '/outlet/sale/add',
+        component: () => import(/* webpackChunkName: "showroom_sale_add" */'./components/outlet/sale/Add.vue'),
+        name: 'showroom_sale_add',
+        meta: {
+            authOutlet: true,
+            title: 'showroom sale'
+        }
+    },
+
+     {
+        path: '/outlet/sale',
+        component: () => import(/* webpackChunkName: "showroom_sale" */'./components/outlet/sale/Index.vue'),
+        name: 'showroom_sale',
+         meta: {
+            authOutlet: true,
+            title: 'showroom sale Info'
+        }
+    },
+
+    {
+        path: '/outlet/whole-sale',
+        component: () => import(/* webpackChunkName: "showroom_whole_sale" */'./components/outlet/sale/wholesale.vue'),
+        name: 'showroom_whole_sale',
+         meta: {
+            authOutlet: true,
+            title: 'showroom whole sale Info'
+        }
+    },
+
+
+      {
+        path: '/outlet/retail-sale',
+        component: () => import(/* webpackChunkName: "showroom_retail_sale" */'./components/outlet/sale/retailsale.vue'),
+        name: 'showroom_retail_sale',
+         meta: {
+            authOutlet: true,
+            title: 'showroom whole sale Info'
+        }
+      },
+
+
+
+    {
+        path: '/outlet/sale/view/:id',
+        component: () => import(/* webpackChunkName: "showroom_sale_view" */'./components/outlet/sale/View.vue'),
+        name: 'showroom_sale_view',
+        meta: {
+            authOutlet: true,
+            title: 'sale details info '
+        }
+
+    },
+    {
+        path: '/outlet/profile',
+        component: () => import(/* webpackChunkName: "outlet_profile" */'./components/outlet/profile/Profile'),
+        name: 'outlet_profile',
+        meta: {
+            title: ' Profile info '
+        }
+    },
+
+    {
+        path: '/outlet/profile/edit',
+        component: () => import(/* webpackChunkName: "outlet_profile_edit" */'./components/outlet/profile/Change_profile'),
+        name: 'outlet_profile_edit',
+        meta: {
+            title: ' Profile info | Edit '
+        }
+
+    },
+
+    {
+        path: '/outlet/security/edit',
+        component: () => import(/* webpackChunkName: "outlet_password_edit" */'./components/outlet/profile/Change_password.vue'),
+        name: 'outlet_password_edit',
+        meta: {
+            title: ' Password | Edit '
+        }
+
+    },
+
+     {
+        path: '/outlet/product/transaction',
+        name: 'product_transaction',
+        component: () => import(/* webpackChunkName: "product_transaction" */'./components/outlet/product_transaction/Index.vue'),
+        meta: {
+            authOutlet:true,
+            title : 'showroom product transaction'
+        }
+    },
+
+     {
+        path: '/outlet/product/pick/back/',
+        name: 'return_showroom_product',
+        component: () => import(/* webpackChunkName: "return_showroom_product" */'./components/outlet/product_transaction/Return.vue'),
+        meta: {
+            authOutlet:true,
+            title : 'return transaction'
+        }
+      },
+
+
+     {
+        path: '/outlet/product/transaction/details/:id',
+        name: 'product_transaction_details',
+        component: () => import(/* webpackChunkName: "product_transaction_details" */'./components/outlet/product_transaction/Details.vue'),
+        meta: {
+           authOutlet: true,
+            title : 'showroom product transaction details'
+        }
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     {
         path: '/merchant/backend/login',
         component: () => import(/* webpackChunkName: "merchnat_login" */'./components/merchant/Login'),
@@ -2254,6 +2533,15 @@ const routes = [
             title : 'showroom edit'
         }
     },
+    {
+        path: '/backend/showroom/balance/transfer/:id',
+        name: 'showroom_balance_transfer',
+        component: () => import(/* webpackChunkName: "showroom_balance_transfer" */'./components/admin/showroom/TransferList.vue'),
+        meta: {
+            requiresAuthAdmin: true,
+            title : 'showroom balance transfer'
+        }
+    },
 
     {
         path: '/backend/showroom_manager',
@@ -2369,6 +2657,17 @@ router.beforeEach((to, from, next) => {
             return
         }
         next('/merchant/backend/login')
+    } else {
+        next()
+    }
+
+   //outlet router middleware 
+   if (to.matched.some(record => record.meta.authOutlet)) {
+        if (localStorage.getItem('outlet_token')) {
+            next()
+            return
+        }
+        next('/outlet/login')
     } else {
         next()
     }

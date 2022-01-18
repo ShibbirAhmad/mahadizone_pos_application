@@ -738,6 +738,9 @@ Route::group([
 
     //showroom routes
     Route::get('api/showroom/list','ShowroomController@index');
+    Route::get('api/showroom/money/transfer/list/{id}','ShowroomController@transferBalance');
+    Route::get('api/admin/access/outlet/{id}','ShowroomController@adminAccessShowroom');
+    Route::post('api/showroom/money/receive','ShowroomController@showroomPaymentReceive');
     Route::post('api/showroom/add','ShowroomController@addShowroom');
     Route::get('api/showroom/edit/item/{id}','ShowroomController@showroomItem');
     Route::post('api/showroom/update/{id}','ShowroomController@updateShowroom');
@@ -784,6 +787,12 @@ Route::get('auth/{provider}/callback', 'Admin\SocialAuthController@handleProvide
 
 Route::get('/backend/{any}', function () {
      return view('admin.master');
+})->where('any', '^(?!api\/)[\/\w\.\,-]*');
+
+
+
+Route::get('/outlet/{any}', function () {
+  return view('outlet.app');
 })->where('any', '^(?!api\/)[\/\w\.\,-]*');
 
 
