@@ -8,11 +8,11 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Customer;
+use App\Models\SubCategory;
 use Illuminate\Support\Str;
 use App\Models\ProductImage;
 use App\Models\Purchaseitem;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use App\Models\ProductBarcode;
 use App\Models\ProductVariant;
 use Illuminate\Validation\Rule;
@@ -20,6 +20,7 @@ use App\Models\ProductAttribute;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
 
 
 class ProductController extends Controller{
@@ -199,7 +200,6 @@ class ProductController extends Controller{
     }
 
 
-
     public function search($search){
 
         $products = Product::where('product_code',$search)->select('id','name','product_code','stock','sale_price','price','discount','status','wallet_point','thumbnail_img')->with(['productBarcode','purchaseItem'])->paginate(110);
@@ -224,6 +224,8 @@ class ProductController extends Controller{
         }
     }
 
+
+
     public function pending($id)
     {
         $product = Product::find($id);
@@ -237,6 +239,9 @@ class ProductController extends Controller{
             }
         }
     }
+
+
+
 
     public function deny($id)
     {
@@ -252,6 +257,9 @@ class ProductController extends Controller{
         }
     }
 
+
+
+
     public function stockUpdate(Request $request, $id)
     {
 
@@ -266,6 +274,9 @@ class ProductController extends Controller{
             }
         }
     }
+
+
+
 
     public function updateBasicInformation(Request $request, $id)
     {
@@ -507,45 +518,43 @@ class ProductController extends Controller{
           $products=Product::where('status',1)->where('stock','>',0)->with('purchaseItem')->paginate($item);
           return response()->json($products);
 
-
-
-
-
-}
+    }
 
     public function printBarcode($id,$howmany){
 
-
+        $product=Product::FindOrFail($id);
         $product_barcode=ProductBarcode::where('product_id',$id)->first();
-        $pdf=PDF::loadView('admin.pdf.barcode',compact('product_barcode','howmany'));
-  //      return $pdf->stream();
-        return view('admin.pdf.barcode',\compact('product_barcode','howmany'));
+        $pdf=PDF::loadView('admin.pdf.barcode',compact('product_barcode','howmany','product'));
+        $pdf->stream();
+        return view('admin.pdf.barcode',compact('product_barcode','howmany','product'));
+
     }
+
+
 
     public function searchCustomer(Request $request,$number){
 
         if(!$request->ajax()){
-            return \abort(404);
+                return \abort(404);
         }
 
        $customer=Customer::where('phone',$number)->first();
 
       if(!empty($customer)){
         $customer_order=Order::where('customer_id',$customer->id)->orderBy('id','DESC')->first();
-
-       return \response()->json([
-             'message'=>"customer al ready register.",
-            'customer'=>$customer
-       ]);
+        return response()->json([
+                'message'=>"customer al ready register.",
+                'customer'=>$customer
+        ]);
 
       }else{
-        return \response()->json([
+        return response()->json([
             'message'=>"new customer for us",
-
           ]);
       }
 
     }
+
     public function get_suggested_product(Request $request){
 
         $paginate_item= $request->item ?? 10 ;
@@ -554,27 +563,28 @@ class ProductController extends Controller{
                'status' => "OK",
                'products' => $products ,
         ]);
- }
+    }
 
 
- public function search_suggested_product($product_code){
+    public function search_suggested_product($product_code){
 
-    $products=Product::where('product_code', 'like', '%'.$product_code.'%')->with(['productImage'])->paginate(20);
-    return response()->json([
-           'status' => "OK",
-           'products' => $products ,
-    ]);
-}
-
- public function search_suggested_product_code_name($data){
+        $products=Product::where('product_code', 'like', '%'.$product_code.'%')->with(['productImage'])->paginate(20);
+        return response()->json([
+            'status' => "OK",
+            'products' => $products ,
+        ]);
+    }
 
 
-    $products=Product::where('product_code', 'like', '%'.$data.'%')
-                        ->orWhere('name', 'like', '%'.$data.'%')
-                        ->with(['productImage','purchaseItem','productBarcode','purchaseItem'])
-                        ->paginate(20);
-    return response()->json($products);
-}
+    public function search_suggested_product_code_name($data){
+
+
+        $products=Product::where('product_code', 'like', '%'.$data.'%')
+                            ->orWhere('name', 'like', '%'.$data.'%')
+                            ->with(['productImage','purchaseItem','productBarcode','purchaseItem'])
+                            ->paginate(20);
+        return response()->json($products);
+    }
 
 
 

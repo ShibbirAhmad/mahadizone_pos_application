@@ -61,7 +61,14 @@
                   </div>
                 </div>
                 <div class="box-body">
-                  <table class="table text-center table-striped table-hover table-bordered " id="table">
+                  <table
+                    class="
+                      table
+                      text-center
+                      table-striped table-hover table-bordered
+                    "
+                    id="table"
+                  >
                     <thead>
                       <tr>
                         <th width="5%">#</th>
@@ -96,7 +103,7 @@
                         </td>
                         <td>
                           <img
-                            :src=" thumbnail_img_url+product.thumbnail_img "
+                            :src="thumbnail_img_url + product.thumbnail_img"
                             class="table-image"
                             alt="product image"
                           />
@@ -133,9 +140,17 @@
                             >Pending</span
                           >
                           <span class="badge badge-warning" v-else>Deny</span>
-                          <br>
-                          <span style="min-width:70px;"  class="badge badge-success" v-if="product.show_home_page==1"> Publish </span>
-                          <span class="badge badge-warning"  v-else> Unpublish </span>
+                          <br />
+                          <span
+                            style="min-width: 70px"
+                            class="badge badge-success"
+                            v-if="product.show_home_page == 1"
+                          >
+                            Publish
+                          </span>
+                          <span class="badge badge-warning" v-else>
+                            Unpublish
+                          </span>
                         </td>
 
                         <td>
@@ -146,32 +161,49 @@
 
                           <div class="dropdown-action" :id="product.id">
                             <a
-                              class="dropdown-item btn btn-success btn-sm dropbtn"
+                              class="
+                                dropdown-item
+                                btn btn-success btn-sm
+                                dropbtn
+                              "
                               v-if="product.status != 1"
                               @click="approved(product)"
                               >Approved</a
                             >
 
                             <a
-                              class="dropdown-item btn btn-primary btn-sm dropbtn"
+                              class="
+                                dropdown-item
+                                btn btn-primary btn-sm
+                                dropbtn
+                              "
                               v-if="product.status != 2"
                               @click="pending(product)"
                               >Pending</a
                             >
                             <a
-                              class="dropdown-item btn btn-warning btn-sm dropbtn"
+                              class="
+                                dropdown-item
+                                btn btn-warning btn-sm
+                                dropbtn
+                              "
                               v-if="product.status != 3"
                               @click="deny(product)"
                               >Deny</a
                             >
 
-                              <a
+                            <a
                               class="dropdown-item btn btn-info btn-sm dropbtn"
                               @click="copy(product.id)"
-                              >Copy</a>
+                              >Copy</a
+                            >
 
                             <a
-                              class="dropdown-item btn btn-warning btn-sm dropbtn"
+                              class="
+                                dropdown-item
+                                btn btn-warning btn-sm
+                                dropbtn
+                              "
                               @click.print="print(product.id)"
                               >Print</a
                             >
@@ -215,7 +247,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </section>
     </div>
@@ -232,7 +263,6 @@ export default {
     setTimeout(() => {
       this.loading = false;
     }, 500);
-
   },
   data() {
     return {
@@ -241,8 +271,8 @@ export default {
       search: "",
       item: 30,
       status: "all",
-      base_url:this.$store.state.image_base_link,
-      thumbnail_img_url:this.$store.state.thumbnail_img_base_link,
+      base_url: this.$store.state.image_base_link,
+      thumbnail_img_url: this.$store.state.thumbnail_img_base_link,
     };
   },
   methods: {
@@ -259,7 +289,6 @@ export default {
           console.log(resp);
           this.products = resp.data.products;
           this.$Progress.finish();
-
         })
         .catch((error) => {
           console.log(error);
@@ -267,39 +296,42 @@ export default {
         });
     },
 
-    purchasePrice(items){
+    purchasePrice(items) {
+      if (items.length > 0) {
 
-       let total_price = 0 ;
-       items.forEach(item => {
-          total_price += item.price ;
-       });
-       let average_price = total_price / items.length ;
-       return average_price ;
+        let total_price = 0;
+        let total_purchase_time = 0;
+        items.forEach((item) => {
+          total_price += parseInt(item.price);
+          total_purchase_time += 1;
+        });
+        let average_price = total_price / total_purchase_time;
+        return average_price.toFixed(0);
+
+      } else {
+        return 0;
+      }
     },
 
-
-    copy($product_id){
-        let copy_items = prompt(
-        " item of copy ?"
-      );
+    copy($product_id) {
+      let copy_items = prompt(" item of copy ?");
       if (copy_items < 1) {
-         return ;
+        return;
       }
-      axios.get('/api/copy/product/'+$product_id+'/'+copy_items)
-      .then(resp =>{
-        console.log(resp);
-        if (resp.data.status=='success') {
-            this.$toasted.show(resp.data.message,{
-              type : 'success',
-              position: 'top-center',
-               duration :3000
-            })
+      axios
+        .get("/api/copy/product/" + $product_id + "/" + copy_items)
+        .then((resp) => {
+          console.log(resp);
+          if (resp.data.status == "success") {
+            this.$toasted.show(resp.data.message, {
+              type: "success",
+              position: "top-center",
+              duration: 3000,
+            });
             this.productList();
-        }
-      })
-
-    }
-,
+          }
+        });
+    },
     approved(product) {
       Swal.fire({
         title: "Are you sure?",
@@ -503,23 +535,22 @@ export default {
           console.log(error);
         });
     },
-   searchProducts(){
-     if(this.search.length>1){
-        axios.get('/api/search/seggested/product/with/name/code/'+this.search)
-      .then(resp=>{
-        console.log(resp)
-         if(resp.data){
-           console.log(resp.data)
-            this.products = resp.data;
-          }else{
-            this.productList()
-          }
-      })
-
-     }else{
-       this.productList();
-
-     }
+    searchProducts() {
+      if (this.search.length > 1) {
+        axios
+          .get("/api/search/seggested/product/with/name/code/" + this.search)
+          .then((resp) => {
+            console.log(resp);
+            if (resp.data) {
+              console.log(resp.data);
+              this.products = resp.data;
+            } else {
+              this.productList();
+            }
+          });
+      } else {
+        this.productList();
+      }
     },
 
     changeDisplay(product) {
@@ -530,22 +561,16 @@ export default {
       let how_many_times = prompt(
         "How many time you want to print this product barcode?"
       );
-      let url='/product/print/barcode/'+producId+'/'+how_many_times
-         window.open(url, '_blank');
+      let url = "/product/print/barcode/" + producId + "/" + how_many_times;
+      window.open(url, "_blank");
     },
   },
-
-
-
-
 };
-
-
 </script>
 
 <style scoped>
-.box{
-  overflow-x:scroll;
+.box {
+  overflow-x: scroll;
 }
 .dropbtn {
   width: 100% !important;
