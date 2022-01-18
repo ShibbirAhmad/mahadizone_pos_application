@@ -17,22 +17,20 @@
       </section>
       <section class="content">
         <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-8 col-lg-offset-1">
+          <div class="row ">
+            <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <h3 class="box-title">Showroom table</h3>
+                    <h3 class="box-title">All Showroom </h3>
                 </div>
                 <div class="box-body">
-                  <table class="table table-bordered table-striped text-center">
+                  <table class="table table-bordered table-centered table-hover table-striped text-center">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">name</th>
-                        <th scope="col">address</th>
-                        <th scope="col">contact person</th>
-                        <th scope="col">Contact number</th>
-                        <th scope="col">action</th>
+                        <th width="10%">#</th>
+                        <th width="20%">Name</th>
+                        <th width="30%">Address</th>
+                        <th width="20%">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -45,10 +43,14 @@
                         v-else
                       >
                         <td scope="row">{{ index + 1 }}</td>
-                        <td>{{ showroom.name }}</td>
+                        <td>
+                          <img :src="base_url + showroom.logo" height="80" style="border-radius:50%" width="80" />
+                          <h4>  {{ showroom.name }}</h4>
+                          <h4>{{ showroom.contact_person }}</h4>
+                          <h4>{{ showroom.contact_number}}</h4>
+                      
+                          </td>
                         <td>{{ showroom.address }}</td>
-                        <td>{{ showroom.contact_person }}</td>
-                        <td>{{ showroom.contact_number}}</td>
                         <td>
                           <router-link class="btn btn-sm btn-success"
                             :to="{
@@ -56,6 +58,13 @@
                               params: { id: showroom.id },
                             }"
                           > <i class="fa fa-edit"></i> </router-link>
+                          <button @click="goToShowroomDashboard(showroom.id)" class="btn btn-info btn-sm"><i class="fa fa-dashboard"></i> Dashboard</button>
+                          
+                          <router-link :to="{name: 'showroom_balance_transfer', params: {id: showroom.id}}" class="btn btn-success btn-sm">Payment 
+                             <i v-if="showroom.payment_pending_transaction > 0" style="color:red;" class="fa fa-bell"><sup>{{ showroom.payment_pending_transaction }}</sup> </i>
+                             <i v-else class="fa fa-bell"><sup>0</sup> </i>
+                            </router-link>
+
                         </td>
                       </tr>
                     </tbody>
@@ -79,6 +88,8 @@ export default {
     return {
       showrooms: "",
       loading: true,
+      base_url:this.$store.state.image_base_link,
+      thumbnail_img_url:this.$store.state.thumbnail_img_base_link,
     };
   },
   methods: {
@@ -90,6 +101,20 @@ export default {
         }
       });
     },
+
+
+   goToShowroomDashboard(id){
+      axios.get("/api/admin/access/outlet/"+id)
+      .then((resp) => {
+        console.log(resp);
+        if (resp.data.status == "SUCCESS") {
+          localStorage.setItem("outlet_token", resp.data.outlet_token);
+          this.$store.commit("outlet", resp.data.outlet);
+          window.open('/outlet/dashboard');
+        }
+      }); 
+   },
+
   },
 };
 </script>

@@ -97,6 +97,18 @@
                         ></has-error>
                       </div>
                     </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label>Logo</label>
+                        <input
+                          class="form-control"
+                          :class="{ 'is-invalid': form.errors.has('logo') }"
+                          type="file"
+                          @change="uploadImage"
+                          name="logo"
+                        />
+                      </div>
+                    </div>
                   </div>
                   <div class="form-group text-center">
                     <button
@@ -134,6 +146,7 @@ export default {
         address: "",
         contact_person: "",
         contact_number: "",
+        logo: "",
       }),
       error: "",
     };
@@ -147,6 +160,7 @@ export default {
           this.form.address = resp.data.showroom.address;
           this.form.contact_person = resp.data.showroom.contact_person;
           this.form.contact_number = resp.data.showroom.contact_number;
+          // this.form.logo = resp.data.showroom.logo;
           this.loading = false;
       });
     },
@@ -171,6 +185,10 @@ export default {
           }
         });
     },
+     uploadImage(e) {
+      const file = e.target.files[0];
+        this.form.logo = file;
+    } 
   },
 };
 </script>

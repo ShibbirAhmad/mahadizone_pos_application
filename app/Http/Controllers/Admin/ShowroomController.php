@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
+use App\Models\Credit;
 use App\Models\Product;
 use App\Models\Showroom;
 use Illuminate\Http\Request;
@@ -13,6 +15,8 @@ use App\Models\ProductTransferItem;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Models\ReturnShowroomProduct;
+use Illuminate\Support\Facades\Session;
+use App\Models\ShowroomMoneyTransaction;
 
 class ShowroomController extends Controller
 {
@@ -21,6 +25,9 @@ class ShowroomController extends Controller
 
     public function index(){
         $showrooms = Showroom::orderBy('id', 'DESC')->with('manager')->get();
+        foreach ($showrooms as $key => $showroom) {
+            $showroom->{'payment_pending_transaction'} = ShowroomMoneyTransaction::where('showroom_id',$showroom->id)->where('status',0)->count();
+        }
         return response()->json([
             'showrooms' => $showrooms,
             'status' => 'SUCCESS'
@@ -28,9 +35,32 @@ class ShowroomController extends Controller
     }
 
 
+    public function transferBalance($id){
+        $showroom_id = Showroom::findOrFail($id);
+        $transfer_list = ShowroomMoneyTransaction::where('showroom_id', $showroom_id->id)->orderBy('id', 'desc')->get();
+        return response()->json($transfer_list);
+    }
+
+
+    public function adminAccessShowroom($id){
+
+        $showroom = Showroom::findOrFail($id);
+        $manager = ShowroomManager::where('showroom_id',$showroom->id)->first();
+        
+        if ($manager) {
+            session()->put('manager', $manager);
+            return response()->json([
+                'outlet' => $manager,
+                'outlet_token' => '@#$DFA###SDA######%QER#@@@@@@@',
+                'status' => 'SUCCESS'
+            ]);  
+        }
+
+    }
+
+
 
     public function addShowroom(Request $request){
-
             $this->validate($request, [
                 'name' => 'required|unique:showrooms',
                 'address' => 'required',
@@ -42,6 +72,10 @@ class ShowroomController extends Controller
             $showroom->address = $request->address;
             $showroom->contact_person = $request->contact_person;
             $showroom->contact_number = $request->contact_number;
+            if($request->hasFile('logo')){
+                $path = $request->file('logo')->store('outlet/logo', 'public');
+                $showroom->logo = $path;
+            }
             if ($showroom->save()) {
                 return response()->json([
                     'status' => 'SUCCESS',
@@ -72,6 +106,10 @@ class ShowroomController extends Controller
             $showroom->address = $request->address;
             $showroom->contact_person = $request->contact_person;
             $showroom->contact_number = $request->contact_number;
+            if($request->hasFile('logo')){
+                $path = $request->file('logo')->store('outlet/logo', 'public');
+                $showroom->logo = $path;
+            }
             if ($showroom->save()) {
                 return response()->json([
                     'status' => 'SUCCESS',
@@ -311,6 +349,37 @@ class ShowroomController extends Controller
 
            return response()->json([
                'status' => 'OK',
+               'message' => 'received successfully' ,
+           ]);
+    }
+
+
+
+
+    public function showroomPaymentReceive(Request $request){
+            // return $request->all();
+            $validatedData = $request->validate([
+                'id' => 'required',
+                'credit_in' => 'required',
+            ]);
+           DB::transaction(function ()  use($request) {
+               $transaction = ShowroomMoneyTransaction::findOrFail($request->id); 
+               $transaction->status=1 ;
+               $transaction->save();
+            //inserting credit ;
+             $showroom = Showroom::findOrFail($transaction->showroom_id);
+             $credit = new Credit();
+             $credit->purpose = "money receive from outlet ".$showroom->name;
+             $credit->amount = $transaction->amount;
+             $credit->comment = $request->comment ?? $credit->purpose;
+             $credit->date = Carbon::now();
+             $credit->credit_in = $request->credit_in;
+             $credit->insert_admin_id = session()->get('admin')['id'];
+             $credit->save();
+           });
+
+           return response()->json([
+               'status' => 1,
                'message' => 'received successfully' ,
            ]);
     }

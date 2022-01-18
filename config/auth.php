@@ -55,7 +55,10 @@ return [
             'driver' => 'session',
             'provider' => 'merchant',
         ],
-
+        'manager' => [
+            'driver' => 'session',
+            'provider' => 'manager',
+        ],
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -97,6 +100,11 @@ return [
         'merchant' => [
             'driver' => 'eloquent',
             'model' => App\Models\Merchant::class,
+        ],
+
+        'manager' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\ShowroomManager::class,
         ],
 
         // 'users' => [
