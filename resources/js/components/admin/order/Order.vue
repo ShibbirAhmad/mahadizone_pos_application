@@ -447,7 +447,7 @@ export default {
       page: 1,
       selected: false,
 
-      //for biblk action
+      //for bulk action
       select_order_id: [],
       bulk_status: "all",
 
@@ -930,11 +930,10 @@ export default {
       location.reload();
     },
 
-    //method inital for select all
+    //method initial for select all
     selectAll() {
-      //first idnetify select true or false
-      //we need a tooglee all select box
-
+      //first identify select true or false
+      //we need a toggle all select box
       //if select true we make selected false, or select true
       if (this.selected == true) {
         this.selected = false;
@@ -942,9 +941,8 @@ export default {
         this.selected = true;
       }
 
-      //elemnt find by the class name
+      //element find by the class name
       let checkBoxClass = document.getElementsByClassName("select-all");
-
       for (let i = 0; i < checkBoxClass.length; i++) {
         //if select active then element set attribute check==true
         //element set attribute check==false

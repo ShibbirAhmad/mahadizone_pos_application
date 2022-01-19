@@ -608,8 +608,49 @@ class ProductController extends Controller{
 
 
 
+    public function filterProductForPrintBarcode(Request $request){
+        //   return $request->all();
+        $products=PurchaseItem::whereIn('product_id',$request->products_id)
+                                 ->whereDate('created_at','>=',$request->start_date)
+                                 ->whereDate('created_at','<=',$request->end_date)
+                                 ->select(DB::raw('SUM(insert_quantity) as total_stock, product_id'))
+                                 ->groupBy('product_id')->get()->each(function($item){
+                                       $item->{'product'} = Product::where('id',$item->product_id)->select('id','name','price','product_code','thumbnail_img')->with('productBarcode:product_id,barcode,barcode_number')->first();
+                                    });
+
+        return response()->json([
+             'status' => 1,
+             'products' => $products,
+        ]);
 
 
+    }
+
+
+
+
+    public function bulkPrintBardCodeSetSession(Request $request){
+
+            session()->forget('print_products');
+            session()->put('print_products', (array)$request->params['products']) ;
+            return response()->json([
+                'status' => 1,
+            ]);
+
+    }
+
+
+
+
+    public function bulkPrintBardCode(){
+
+        $products = session()->get('print_products') ;
+        $pdf=PDF::loadView('admin.pdf.bulk_barcode',compact('products'));
+        $pdf->stream();
+        return view('admin.pdf.bulk_barcode',compact('products'));
+
+
+    }
 
 
 

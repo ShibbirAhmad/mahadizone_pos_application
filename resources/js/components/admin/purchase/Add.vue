@@ -32,7 +32,7 @@
                 <div class="row">
                   <div class="col-lg-3">
                     <div class="form-group">
-                      <label>Purchase_date</label>
+                      <label>Purchase Date</label>
                       <date-picker
                         autocomplete="off"
                         v-model="purchase_date"
@@ -42,7 +42,7 @@
                   </div>
                   <div class="col-lg-3">
                     <div class="form-group">
-                      <label>Invoice_no</label>
+                      <label>Supplier Invoice No (optional)</label>
                       <input
                         class="form-control"
                         v-model="invoice_no"
@@ -83,7 +83,7 @@
                   <div class="row">
                     <div class="col-lg-4">
                       <div class="form-group">
-                        <label>Product_code</label>
+                        <label>Product Code</label>
                         <input
                           class="form-control"
                           autocomplete="off"
@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-lg-2">
                       <div class="form-group">
-                        <label>Purchase_price</label>
+                        <label>Purchase Price</label>
                         <input
                           v-model="preview_products.price"
                           type="text"
@@ -164,7 +164,7 @@
                   </div>
                 </div>
                 <div class="product_preview" v-if="products.length > 0">
-                  <table class="table">
+                  <table class="table table-hover table-bordered table-striped ">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -176,7 +176,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="(product, index) in products.slice().reverse()" >
+                      <tr v-for="(product, index) in products" :key="index" >
                         <td>{{ index + 1 }}</td>
                         <td>{{ product.product_code + "-" + product.product_name }}</td>
                         <td>{{ product.price }}</td>
@@ -313,7 +313,7 @@ export default {
 
   methods: {
     add() {
-    
+
       this.$Progress.start();
       axios
         .post("/add/purchase", {
@@ -460,7 +460,6 @@ export default {
       if (
         this.preview_products.price.length > 0 &&
         this.preview_products.quantity.length > 0 &&
-        this.invoice_no.length > 0 &&
         this.preview_products.product_id &&
         this.search.length > 0 &&
         this.supplier_id
@@ -470,7 +469,7 @@ export default {
         this.validationPreview = true;
         // this.submitValidation=true;
       }
-      if (this.products.length > 0 && this.invoice_no.length > 0 && this.supplier_id ) {
+      if (this.products.length > 0  && this.supplier_id ) {
         this.submitValidation = false;
       } else {
         this.submitValidation = true;

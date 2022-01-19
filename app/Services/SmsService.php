@@ -26,6 +26,16 @@ class SmsService{
    }
 
 
+
+     public static function sendMessageToShowroomCustomer($showroom_name,$customer,$sale){
+
+            $sms = 'Dear '.$customer->name ?? null .'.'.' Thanks for purchase from ' . $showroom_name . ' the payable amount is '.$sale->total.' BDT and your invoice number is '.$sale->invoice_no. '.' ;   // put here your dynamic message text here
+            return self::smsApi($customer->phone,$sms);
+
+        }
+
+
+
    public   static function SendMessageToInvestor($investor,$amount,$profit_month){
 
         $sms = 'Assalamualikum, You have received '.number_format($amount).'/=BDT, as your investment profit of '.$profit_month.'  from the' . self::$setting->title. ' Thanks for being with us';   // put here your dynamic message text here

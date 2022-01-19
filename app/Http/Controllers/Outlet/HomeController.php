@@ -61,9 +61,9 @@ class HomeController extends Controller
 
       public  function generalSetting()
       {
-            $general_settig=GeneralSetting::latest()->first();
+            $general_setting=GeneralSetting::latest()->first();
             return response()->json([
-                  'general_setting' => $general_settig
+                  'general_setting' => $general_setting
             ]);
       }
 

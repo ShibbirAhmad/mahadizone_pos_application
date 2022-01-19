@@ -25,6 +25,18 @@
                 <div class="box-header with-border">
                   <div class="row">
                     <div class="col-lg-2">
+                       <button @click="showModal" class="btn btn-success btn-sm"> Product Bulk Print  </button>
+                    </div>
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4">
+                      <input
+                        class="form-control"
+                        placeholder="search with product code || product name "
+                        v-model="search"
+                        @keyup="searchProducts()"
+                      />
+                    </div>
+                    <div class="col-lg-2">
                       <select
                         class="form-control"
                         v-model="item"
@@ -36,15 +48,6 @@
                         <option value="150">150</option>
                         <option value="200">200</option>
                       </select>
-                    </div>
-                    <div class="col-lg-4"></div>
-                    <div class="col-lg-4">
-                      <input
-                        class="form-control"
-                        placeholder="search with product code || product name "
-                        v-model="search"
-                        @keyup="searchProducts()"
-                      />
                     </div>
                     <div class="col-lg-2">
                       <select
@@ -67,11 +70,12 @@
                       text-center
                       table-striped table-hover table-bordered
                     "
-                    id="table"
                   >
                     <thead>
                       <tr>
-                        <th width="5%">#</th>
+                        <th width="5%">
+                          <input type="checkbox" @click="selectAll" />
+                        </th>
                         <th width="10%">name</th>
                         <th width="10%">barcode</th>
                         <th width="5%">image</th>
@@ -90,7 +94,14 @@
                       </h1>
 
                       <tr v-for="(product, index) in products.data" v-else>
-                        <td scope="row">{{ index + 1 }}</td>
+                        <td style="width: 1%">
+                          <input
+                            type="checkbox"
+                            class="select-all"
+                            v-model="form.products_id"
+                            :value="product.id"
+                          />
+                        </td>
                         <td>{{ product.name }}</td>
                         <td style="width: 100px">
                           <p
@@ -104,7 +115,7 @@
                         <td>
                           <img
                             :src="thumbnail_img_url + product.thumbnail_img"
-                            class="table-image"
+                            class="table-image product_img"
                             alt="product image"
                           />
                         </td>
@@ -250,13 +261,57 @@
         </div>
       </section>
     </div>
+  <!-- start pdf download modal  -->
+         <modal name="product_bulk_modal" :width="400" :height="300">
+           <form @submit.prevent="previewBulkPrint" method="post" >
+              <div class="card" style="padding: 20px">
+                 <div class="card-header text-center">
+                </div>
+              <div class="card-body">
+                  <div class="form-group">
+                    <label>Start Date</label>
+                    <date-picker
+                      autocomplete="off"
+                      v-model="form.start_date"
+                      name="start_date"
+                      :config="options"
+                      required
+                    ></date-picker>
+                  </div>
+
+                 <div class="form-group">
+                    <label>End Date</label>
+                    <date-picker
+                      autocomplete="off"
+                      v-model="form.end_date"
+                      name="end_date"
+                      required
+                      :config="options"
+                    ></date-picker>
+                  </div>
+
+
+                <br>
+                <div class="form-group text-center">
+
+                   <button  type="submit"
+                    class="btn btn-success ">
+                      Submit
+                  </button>
+
+                </div>
+                <br>
+              </div>
+            </div>
+           </form>
+          </modal>
+   <!-- end pdf download modal  -->
+
   </div>
 </template>
 
 <script>
 import { Form, HasError, AlertError } from "vform";
-import { jsPDF } from "jspdf";
-
 export default {
   created() {
     this.productList();
@@ -269,13 +324,97 @@ export default {
       products: {},
       loading: true,
       search: "",
-      item: 30,
+      item: 50,
       status: "all",
       base_url: this.$store.state.image_base_link,
       thumbnail_img_url: this.$store.state.thumbnail_img_base_link,
+      //for bulk action
+       form: new Form({
+        products_id: [],
+        start_date: "",
+        end_date: "",
+      }),
+      selected: false,
+      options: {
+        format: "YYYY-MM-DD",
+        useCurrent: true,
+      },
     };
   },
   methods: {
+
+
+   async previewBulkPrint(){
+
+        await this.form.post('/api/product/bulk/action/barcode/print')
+        .then((resp)=>{
+           console.log(resp);
+           if (resp.data.status==1) {
+              this.$router.push({name:'bulk_product_print_preview',params:{contents:resp.data.products}}); ;
+              this.$modal.hide("product_bulk_modal");
+           }
+        })
+
+    },
+
+
+
+    //method initial for select all
+    selectAll() {
+      //first identify select true or false
+      //we need a toggle all select box
+      //if select true we make selected false, or select true
+      if (this.selected == true) {
+        this.selected = false;
+      } else {
+        this.selected = true;
+      }
+      //element find by the class name
+      let checkBoxClass = document.getElementsByClassName("select-all");
+      for (let i = 0; i < checkBoxClass.length; i++) {
+        //if select active then element set attribute check==true
+        //element set attribute check==false
+        if (this.selected == true) {
+          checkBoxClass[i].checked = true;
+        } else {
+          checkBoxClass[i].checked = false;
+        }
+      }
+      //at last push order id in selected_order_id arrow....
+      //and agin check selected true or false.....
+      if (this.selected == true) {
+        for (let i = 0; i < this.products.data.length; i++) {
+          this.form.products_id.push(this.products.data[i].id);
+        }
+      } else {
+        this.form.products_id = [];
+      }
+
+    },
+
+
+
+     showModal() {
+      if (this.form.products_id.length <=0) {
+        alert("please,firstly select product ");
+        return;
+      }
+      this.todayDate();
+      this.$modal.show("product_bulk_modal");
+    },
+
+
+    todayDate() {
+      //current date
+      let d = new Date();
+      //current mount
+      //current day
+      let month = d.getMonth() + 1;
+      let day = d.getDate();
+      let output = d.getFullYear() + "-" + (("" + month).length < 2 ? "0" : "") +  month + "-" + (("" + day).length < 2 ? "0" : "") + day;
+      this.form.end_date = output;
+    },
+
     productList(page = 1) {
       this.$Progress.start();
       axios
@@ -298,7 +437,6 @@ export default {
 
     purchasePrice(items) {
       if (items.length > 0) {
-
         let total_price = 0;
         let total_purchase_time = 0;
         items.forEach((item) => {
@@ -307,7 +445,6 @@ export default {
         });
         let average_price = total_price / total_purchase_time;
         return average_price.toFixed(0);
-
       } else {
         return 0;
       }
@@ -332,6 +469,8 @@ export default {
           }
         });
     },
+
+
     approved(product) {
       Swal.fire({
         title: "Are you sure?",
@@ -355,7 +494,7 @@ export default {
                   duration: 4000,
                 });
               } else {
-                this.$toasted.show("some thing want to wrong", {
+                this.$toasted.show("something  went to wrong", {
                   position: "top-center",
                   type: "error",
                   duration: 4000,
@@ -364,7 +503,7 @@ export default {
             })
             .catch((error) => {
               // console.log(error)
-              this.$toasted.show("some thing want to wrong", {
+              this.$toasted.show("something  went to wrong", {
                 position: "top-center",
                 type: "error",
                 duration: 4000,
@@ -401,7 +540,7 @@ export default {
                   duration: 4000,
                 });
               } else {
-                this.$toasted.show("some thing want to wrong", {
+                this.$toasted.show("something  went to wrong", {
                   position: "top-center",
                   type: "error",
                   duration: 4000,
@@ -409,7 +548,7 @@ export default {
               }
             })
             .catch((error) => {
-              this.$toasted.show("some thing want to wrong", {
+              this.$toasted.show("something  went to wrong", {
                 position: "top-center",
                 type: "error",
                 duration: 4000,
@@ -446,7 +585,7 @@ export default {
                   duration: 4000,
                 });
               } else {
-                this.$toasted.show("some thing want to wrong", {
+                this.$toasted.show("something  went to wrong", {
                   position: "top-center",
                   type: "error",
                   duration: 4000,
@@ -454,7 +593,7 @@ export default {
               }
             })
             .catch((error) => {
-              this.$toasted.show("some thing want to wrong", {
+              this.$toasted.show("something  went to wrong", {
                 position: "top-center",
                 type: "error",
                 duration: 4000,
@@ -470,7 +609,7 @@ export default {
       });
     },
     stockUpdate(product) {
-      let stock = prompt("How many stock you want to update ?");
+      let stock = prompt("How many stock you went to update ?");
       console.log(stock);
       axios
         .post("/stock/update/product/" + product.id, {
@@ -485,7 +624,7 @@ export default {
               duration: 4000,
             });
           } else {
-            this.$toasted.show("some thing want to wrong", {
+            this.$toasted.show("something  went to wrong", {
               position: "top-center",
               type: "error",
               duration: 4000,
@@ -557,11 +696,11 @@ export default {
       let element = document.getElementById(product.id);
       element.classList.toggle("dropbtn-active");
     },
-    print(producId) {
+    print(productId) {
       let how_many_times = prompt(
-        "How many time you want to print this product barcode?"
+        "How many time you went to print this product barcode?"
       );
-      let url = "/product/print/barcode/" + producId + "/" + how_many_times;
+      let url = "/product/print/barcode/" + productId + "/" + how_many_times;
       window.open(url, "_blank");
     },
   },
@@ -584,4 +723,9 @@ export default {
   width: 90px;
   position: absolute;
 }
+
+.product_img:hover{
+    transform: scale(1.5);
+}
+
 </style>

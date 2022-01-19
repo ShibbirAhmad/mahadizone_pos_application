@@ -17,7 +17,7 @@
             <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <h3 class="box-title">Product Trasformatin Tables</h3>
+                    <h3 class="box-title">Product Transaction Tables</h3>
                 </div>
                 <div class="box-body">
                   <table class="table table-bordered table-hover table-striped text-center ">
@@ -45,7 +45,7 @@
                         <td> &#2547; {{ transaction.total }} </td>
                         <td>
                           <span v-if="transaction.status==0" class="badge badge-warning"> Pending </span>
-                          <span v-else class="badge badge-success"> Recieved </span>
+                          <span v-else class="badge badge-success"> Received </span>
                         </td>
                         <td>{{ transaction.comment ? transaction.comment : 'no comment' }}</td>
                         <td>
@@ -60,7 +60,30 @@
                         </td>
                       </tr>
                     </tbody>
+
                   </table>
+                </div>
+                  <div class="box-footer">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <pagination
+                        :data="transactions"
+                        @pagination-change-page="transactionsList"
+                        :limit="3"
+                      ></pagination>
+                    </div>
+                    <div
+                      class="col-lg-6 mt-1"
+                      style="margin-top: 25px; text-align: right"
+                    >
+                      <p>
+                        Showing
+                        <strong>{{ transactions.from }}</strong> to
+                        <strong>{{ transactions.to }}</strong> of total
+                        <strong>{{ transactions.total }}</strong> entries
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

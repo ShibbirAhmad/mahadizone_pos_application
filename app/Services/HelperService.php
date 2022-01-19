@@ -12,21 +12,23 @@ class   HelperService{
         // 2 for sale Invoice
         // 3 for purchase Invoice
 
-        $invoice_no = 22 + rand(111,999).substr(time(),0,2) ;
+        $order_invoice_no = 22 + Order::max('id') ;
+        $sale_invoice_no = 22 + Sale::max('id') ;
+        $purchase_invoice_no = 22 + Purchase::max('id') ;
         //checking in order  table
         if ($invoice_type==1) {
-            $isExistInvoice = Self::isExist(new Order(),'invoice_no',$invoice_no) ;
-            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $invoice_no ;
+            $isExistInvoice = Self::isExist(new Order(),'invoice_no',$order_invoice_no) ;
+            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $order_invoice_no ;
         }
         //checking in sale  table
         if ($invoice_type==2) {
-            $isExistInvoice = Self::isExist(new Sale(),'invoice_no',$invoice_no) ;
-            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $invoice_no ;
+            $isExistInvoice = Self::isExist(new Sale(),'invoice_no',$sale_invoice_no) ;
+            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $sale_invoice_no ;
         }
          //checking in sale  table
         if ($invoice_type==3) {
-            $isExistInvoice = Self::isExist(new Purchase(),'invoice_no',$invoice_no) ;
-            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $invoice_no ;
+            $isExistInvoice = Self::isExist(new Purchase(),'invoice_no',$purchase_invoice_no) ;
+            return !empty($isExistInvoice) ? self::uniqueInvoiceMaker($invoice_type) : $purchase_invoice_no ;
         }
 
    }

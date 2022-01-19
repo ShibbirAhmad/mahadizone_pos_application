@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\SupplierPayment;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\HelperService;
 use Intervention\Image\Facades\Image;
 
 class PurchaseController extends Controller
@@ -50,17 +51,18 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'supplier_id' => 'required|',
-            'invoice_no' => 'required|',
+            'supplier_id' => 'required',
+            // 'invoice_no' => 'required|',
             // 'memo' => 'required',
           //  'AmountTotal' => 'required|numeric',
 
         ]);
-         DB::transaction(function() use($request){
+        DB::transaction(function() use($request){
        //first save the purchase information
         $purchase = new Purchase();
         $purchase->supplier_id = $request->supplier_id;
-        $purchase->invoice_no = $request->invoice_no;
+        $purchase->invoice_no = HelperService::uniqueInvoiceMaker(3);
+        $purchase->supplier_invoice_no = $request->invoice_no ?? null;
         $purchase->total = $request->total;
         $purchase->paid = $request->paid ?? 0;
         $purchase->status=$request->status;

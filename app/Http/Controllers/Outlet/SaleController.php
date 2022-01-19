@@ -15,6 +15,7 @@ use App\Models\ShowroomProduct;
 use App\Models\ShowroomCredit;
 use App\Models\ShowroomDebit;
 use App\Models\GeneralSetting;
+use App\Services\SmsService;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade as PDF;
 
@@ -99,8 +100,8 @@ class SaleController extends Controller
                 'sale_type' => 'required',
             ]);
         DB::transaction(function() use($request) {
-            
-            $showroom_id=session()->get('manager')['showroom_id'];  
+
+            $showroom_id=session()->get('manager')['showroom_id'];
             $showroom=Showroom::findOrFail($showroom_id);
             $max_id=showroomSale::max('id') ?? 0  ;
             $invoice_no=$max_id + 433 ;
@@ -122,7 +123,7 @@ class SaleController extends Controller
                     $customer->save();
                 }
             }
-            
+
             //inserting sale
             $sale=new ShowroomSale();
             $sale->showroom_id=$showroom_id;
@@ -138,7 +139,9 @@ class SaleController extends Controller
             $sale->due_amount=$request->due ?? 0 ;
             $sale->total=$request->total ;
             $sale->save();
-            // ShowroomSale::sendMessageToCustomer($showroom->name,$customer,$sale);
+            if (!empty($request->phone)) {
+                 SmsService::sendMessageToShowroomCustomer($showroom->name,$customer,$sale);
+            }
             //save the sale item
            foreach ($request->products as $item) {
             //manage product stock

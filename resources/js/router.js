@@ -1582,6 +1582,7 @@ const routes = [
     },
 
 
+
     {
         path: '/backend/purchase',
         component: () => import(/* webpackChunkName: "purchase" */'./components/admin/purchase/Purchase'),
@@ -2617,6 +2618,21 @@ const routes = [
     },
 
 
+    {
+        path: '/backend/product/bulk/print/preview',
+        component: () => import(/* webpackChunkName: "bulk_product_print_preview" */'./components/admin/product/BulkPrintPreview.vue'),
+        name: 'bulk_product_print_preview',
+        props: {
+                header: true,
+                content: true
+               },
+        meta: {
+            requiresAuthAdmin: true,
+            title: 'bulk products print barcode preview'
+           }
+    },
+
+
 
 
 ]
@@ -2661,7 +2677,7 @@ router.beforeEach((to, from, next) => {
         next()
     }
 
-   //outlet router middleware 
+   //outlet router middleware
    if (to.matched.some(record => record.meta.authOutlet)) {
         if (localStorage.getItem('outlet_token')) {
             next()

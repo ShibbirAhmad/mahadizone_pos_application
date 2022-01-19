@@ -18,7 +18,7 @@
       <section class="content">
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col-lg-8 col-lg-offset-1">
+            <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">Purchase table</h3>
@@ -75,11 +75,10 @@
                     <thead>
                       <tr>
                         <th scope="col">#</th>
-                         <th scope="col">Date</th>
-                          <th scope="col">Supplier</th>
-
-                        <th scope="col">Invoice_no</th>
-                        <th scope="col">Total_amount</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Supplier</th>
+                        <th scope="col">Invoice No</th>
+                        <th scope="col">Total Amount</th>
                         <th scope="col">Action</th>
                       </tr>
                     </thead>

@@ -3,6 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
+Route::get('reboot', function () {
+Artisan::call('cache:clear');
+Artisan::call('config:clear');
+Artisan::call('route:clear');
+Artisan::call('config:cache');
+     dd("Ready to Start.");
+});
 
 Route::get('/', function(){
   //  $exitCode = Artisan::call('optimize:clear');
@@ -392,23 +399,26 @@ Route::group([
 
 
     //start the product route
-    Route::get('/list/product', 'ProductController@index');
+    Route::get('list/product', 'ProductController@index');
     Route::post('product/add', 'ProductController@store');
-    Route::get('/approved/product/{id}', 'ProductController@approved');
-    Route::get('/pending/product/{id}', 'ProductController@pending');
-    Route::get('/deny/product/{id}', 'ProductController@deny');
+    Route::get('approved/product/{id}', 'ProductController@approved');
+    Route::get('pending/product/{id}', 'ProductController@pending');
+    Route::get('deny/product/{id}', 'ProductController@deny');
     Route::get('api/copy/product/{id}/{copy_items}','ProductController@copyProduct');
-    Route::post('/stock/update/product/{id}', 'ProductController@stockUpdate');
-    Route::get('/edit/product/{id}', 'ProductController@edit');
-    Route::post('/update/product/basicInformation/{id}', 'ProductController@updateBasicInformation');
-    Route::post('/update/product/properties/{id}', 'ProductController@updateProperties');
-    Route::post('/update/product/image/{id}', 'ProductController@UpdateProductImage');
-    Route::get('/delete/product/image/{id}', 'ProductController@deleteImage');
-    Route::get('/destroy/product/{id}', 'ProductController@destroy');
+    Route::post('stock/update/product/{id}', 'ProductController@stockUpdate');
+    Route::get('edit/product/{id}', 'ProductController@edit');
+    Route::post('update/product/basicInformation/{id}', 'ProductController@updateBasicInformation');
+    Route::post('update/product/properties/{id}', 'ProductController@updateProperties');
+    Route::post('update/product/image/{id}', 'ProductController@UpdateProductImage');
+    Route::get('delete/product/image/{id}', 'ProductController@deleteImage');
+    Route::get('destroy/product/{id}', 'ProductController@destroy');
     Route::get('search/product/{search}', 'ProductController@search');
     Route::get('search/single/product/{search}', 'ProductController@searchSingleProduct');
-    Route::get('/search/product/with/code/{search}', 'ProductController@searchWithCode')->name('search.product.with.code');
+    Route::get('search/product/with/code/{search}', 'ProductController@searchWithCode')->name('search.product.with.code');
     Route::get('search/customer/with/phone/number/{number}', 'ProductController@searchCustomer');
+    Route::post('api/product/bulk/action/barcode/print', 'ProductController@filterProductForPrintBarcode');
+    Route::post('api/product/bulk/barcode/print/set/in/session', 'ProductController@bulkPrintBardCodeSetSession');
+    Route::get('api/product/bulk/barcode/print', 'ProductController@bulkPrintBardCode');
 
     Route::get('api/get/seggested/product/for/order','ProductController@get_suggested_product');
     Route::get('api/search/seggested/product/for/order/{product_code}','ProductController@search_suggested_product');

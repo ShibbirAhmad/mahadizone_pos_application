@@ -13,10 +13,12 @@ use Illuminate\Http\Request;
 use App\Models\CompanySalePaid;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\HelperService;
 use App\Services\SmsService;
 
 class SaleController extends Controller
 {
+
     public function __construct(Request $request)
     {
         if(!$request->ajax()){
@@ -42,22 +44,6 @@ class SaleController extends Controller
 
 
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
    public function store(Request $request)
     {
         //  return $request->all();
@@ -72,7 +58,7 @@ class SaleController extends Controller
                     $sale->name=$company->name;
                     $sale->mobile_no=$company->phone;
                     $sale->address=$company->phone;
-                    $sale->invoice_no='S-'.$sale->id;
+                    $sale->invoice_no=HelperService::uniqueInvoiceMaker(2);
                     $sale->total=$request->AmountTotal;
                     $sale->paid=$request->paid ?? 0;
                     $sale->discount=$request->discount ?? 0;
@@ -125,7 +111,7 @@ class SaleController extends Controller
                     $sale->name=$request->name ?? null;
                     $sale->mobile_no=$request->mobile_no ?? null;
                     $sale->address=$request->address;
-                    $sale->invoice_no='S-'.$sale->id;
+                    $sale->invoice_no=HelperService::uniqueInvoiceMaker(2);
                     $sale->total=$request->AmountTotal;
                     $sale->paid=$request->paid ?? 0;
                     $sale->discount=$request->discount ?? 0;
@@ -228,39 +214,7 @@ class SaleController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 
     public function paid($id){
 

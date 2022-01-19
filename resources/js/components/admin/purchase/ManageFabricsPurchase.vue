@@ -20,7 +20,7 @@
       <section class="content">
         <div class="container">
           <div class="row justify-content-center">
-            <div class="col-lg-8 col-lg-offset-1">
+            <div class="col-lg-11 col-md-11">
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <div class="row">
