@@ -359,7 +359,7 @@ export default {
           if (resp.data.status == "SUCCESS") {
             //end progress bar when success resp
             this.$Progress.finish();
-            window.open('/outlet/sale/recipient/'+resp.data.sale_id);
+            window.open('/api/print/sale/recipient/'+resp.data.sale_id);
             this.$toasted.show(resp.data.message, {
               type: "success",
               position: "top-center",
